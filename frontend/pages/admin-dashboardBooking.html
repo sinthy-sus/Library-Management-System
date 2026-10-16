@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Library Booking System</title>
+  <link rel="stylesheet" href="../css/admin-dashboardBooking.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/footer.css">
+</head>
+<body>
+    <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-brand">📚 <span>LibraryHub</span></div>
+    <div class="navbar-links" id="navLinks"></div>
+  </nav>
+
+  <div class="dashboard-container">
+    <!-- Header -->
+    <div class="dashboard-header">
+      <h1>📊 Library Booking Admin Dashboard</h1>
+      <p>Real-time seat booking management system</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total-seats">
+        <div class="stat-icon">🪑</div>
+        <div class="stat-info">
+          <h3>Total Seats</h3>
+          <p id="totalSeats">32</p>
+        </div>
+      </div>
+
+      <div class="stat-card available-seats">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <h3>Available Now</h3>
+          <p id="availableSeats">0</p>
+        </div>
+      </div>
+
+      <div class="stat-card booked-seats">
+        <div class="stat-icon">📚</div>
+        <div class="stat-info">
+          <h3>Booked Seats</h3>
+          <p id="bookedSeats">0</p>
+        </div>
+      </div>
+
+      <div class="stat-card today-bookings">
+        <div class="stat-icon">📅</div>
+        <div class="stat-info">
+          <h3>Today's Bookings</h3>
+          <p id="todayBookings">0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button onclick="window.location.href='bookingseats.html'" class="btn-primary">
+        🪑 Book New Seat
+      </button>
+      <button onclick="refreshData()" class="btn-secondary">
+        🔄 Refresh Data
+      </button>
+       <button onclick="downloadPDF()" class="btn-download">
+    📄 Download PDF
+  </button>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="bookings-table-container">
+      <div class="table-header">
+        <h2>All Bookings</h2>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search by Student ID or Name..." onkeyup="searchBookings()">
+        </div>
+      </div>
+      
+      <div class="table-wrapper">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Seat(s)</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Actions</th>
+             </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <tr>
+              <td colspan="6" class="loading-text">Loading bookings...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="dashboard-footer">
+      <p>Last updated: <span id="lastUpdated">-</span></p>
+      <button onclick="window.location.href='bookingseats.html'" class="footer-link">
+        ← Back to Booking Page
+      </button>
+    </div>
+  </div>
+
+  <script src="../js/admin-dashboardBooking.js"></script>
+
+    <!-- Auth.js for authentication and navbar -->
+  <script src="../js/auth.js?v=2"></script>
+  
+  <!--  Authentication check for admin access -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Update navbar
+      if (typeof updateNavbar === 'function') {
+        updateNavbar("../");
+      }
+      
+      // Check if user is admin - this will redirect if not admin
+      if (typeof requireAdmin === 'function') {
+        if (!requireAdmin()) {
+          return;
+        }
+      } else {
+        // Fallback check if requireAdmin doesn't exist
+        const user = getUser ? getUser() : null;
+        if (!user || !user.isAdmin) {
+          alert("Access Denied. Admin privileges required.");
+          window.location.href = "../index.html";
+          return;
+        }
+      }
+      
+      // Display admin welcome message
+      const user = getUser ? getUser() : null;
+      if (user) {
+        console.log("Admin logged in:", user.name);
+        
+        // Optional: Add admin name to header
+        const dashboardHeader = document.querySelector('.dashboard-header h1');
+        if (dashboardHeader) {
+          // You can add admin name here if you want
+        }
+      }
+      
+      // Load dashboard data only if admin
+      if (typeof loadDashboardData === 'function') {
+        loadDashboardData();
+      }
+    });
+  </script>
+<!-- Site Footer -->
+<div id="footer"></div>
+
+<script>
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
+<!-- ADMIN EDIT DRAWER -->
+<!-- ADMIN EDIT DRAWER -->
+<div id="admin-drawer"
+  class="fixed top-0 left-0 z-50 h-screen w-96 bg-[#1E293B] shadow-lg transform -translate-x-full transition-transform duration-300">
+
+  <div class="p-4 border-b flex justify-between items-center">
+    <h2 class="text-lg font-bold">Edit Booking</h2>
+    <button onclick="closeAdminDrawer()">✖</button>
+  </div>
+
+  <form id="adminEditForm" class="p-4 space-y-4">
+
+    <input type="hidden" id="editBookingId">
+
+    <div>
+      <label>Name</label>
+      <input id="editName" class="w-full border p-2 rounded">
+      <div id="editNameError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <div>
+      <label>Student ID</label>
+      <input id="editStudentId" class="w-full border p-2 rounded">
+      <div id="editStudentIdError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <div>
+      <label>Seat</label>
+      <input id="editSeat" class="w-full border p-2 rounded">
+      <div id="editSeatError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <div>
+      <label>Date</label>
+      <input id="editDate" class="w-full border p-2 rounded">
+      <div id="editDateError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <div>
+      <label>From Time</label>
+      <input id="editFromTime" type="time" class="w-full border p-2 rounded">
+      <div id="editTimeError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <div>
+      <label>To Time</label>
+      <input id="editToTime" type="time" class="w-full border p-2 rounded">
+      <div id="editToTimeError" class="error-message text-red-500 text-sm mt-1" style="display: none;"></div>
+    </div>
+
+    <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">
+      Save Changes
+    </button>
+  </form>
+</div>
+<!-- chat bot -->
+<link rel="stylesheet" href="../css/chatbot.css">
+<div id="chatbot-root">
+    <button id="chatToggle" class="chat-toggle">
+        <span class="chat-icon">💬</span>
+        <span class="close-icon" style="display:none;">✕</span>
+    </button>
+
+    <div id="chatContainer" class="chat-container" style="display: none;">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="chat-avatar">🤖</div>
+                <div>
+                    <h3>Library Assistant</h3>
+                    <p id="greetingMessage">Welcome! How can I help you today?</p>
+                </div>
+            </div>
+            <button id="closeChat" class="close-chat">✕</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    👋 Hello! I'm your Library Assistant. <br><br>
+                    I can help you with:
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>📖 Finding books and resources</li>
+                        <li>🪑 Seat booking information</li>
+                        <li>⏰ Library hours and location</li>
+                        <li>📚 Borrowing and returning books</li>
+                        <li>💳 Library membership</li>
+                        <li>❓ Any other library-related questions</li>
+                    </ul>
+                    How can I assist you today?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Type your message here..." class="chat-input">
+            <button id="sendMessage" class="send-button">📤 Send</button>
+        </div>
+        
+        <div class="chat-footer">
+            <p>Powered by LibraryHub Assistant</p>
+        </div>
+    </div>
+</div>
+
+<script src="../js/chatbot.js"></script>
+</body>
+</html>

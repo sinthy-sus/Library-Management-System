@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/bookingseats.css">
+  <link rel="stylesheet" href="../css/navbar.css">
+  <link rel="stylesheet" href="../css/footer.css">
+  <title>3D Library Floor UI</title>
+</head>
+
+<body>
+<nav class="navbar" id="navbar">
+    <div class="navbar-brand">📚 <span>LibraryHub</span></div>
+    <div class="navbar-links" id="navLinks"></div>
+  </nav>
+  <div class="page-content">
+  <h1 class="title-3d"> Library Floor</h1>
+<!-- 3D LIBRARY MAP VIEW - ADD -->
+<!-- LIBRARY FLOOR MAP PLAN  -->
+  <div class="floor-map-plan">
+    <div class="map-header">
+      <h2>📋 LIBRARY FLOOR PLAN</h2>
+      <p>2nd Floor | Study Area | 32 Seats Available</p>
+    </div>
+    
+    <div class="map-layout">
+      <div class="library-grid">
+        <!-- Left Side Tables -->
+        <div class="left-section">
+          <div class="map-table-card">
+            <div class="table-number">TABLE 01</div>
+            <div class="table-title">📖 STUDY TABLE A</div>
+            <div class="seats-grid" id="mapSeatsA">
+              <div class="map-seat" data-seat="A1">A1</div>
+              <div class="map-seat" data-seat="A2">A2</div>
+              <div class="map-seat" data-seat="A3">A3</div>
+              <div class="map-seat" data-seat="A4">A4</div>
+              <div class="map-seat" data-seat="A5">A5</div>
+              <div class="map-seat" data-seat="A6">A6</div>
+              <div class="map-seat" data-seat="A7">A7</div>
+              <div class="map-seat" data-seat="A8">A8</div>
+            </div>
+          </div>
+          
+          <div class="map-table-card">
+            <div class="table-number">TABLE 02</div>
+            <div class="table-title">📖 STUDY TABLE B</div>
+            <div class="seats-grid" id="mapSeatsB">
+              <div class="map-seat" data-seat="B1">B1</div>
+              <div class="map-seat" data-seat="B2">B2</div>
+              <div class="map-seat" data-seat="B3">B3</div>
+              <div class="map-seat" data-seat="B4">B4</div>
+              <div class="map-seat" data-seat="B5">B5</div>
+              <div class="map-seat" data-seat="B6">B6</div>
+              <div class="map-seat" data-seat="B7">B7</div>
+              <div class="map-seat" data-seat="B8">B8</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Center Aisle -->
+        <div class="center-aisle">
+          <div class="aisle-icon">🚶</div>
+          <div class="aisle-text">MAIN AISLE</div>
+          <div class="aisle-icon">🚶</div>
+        </div>
+        
+        <!-- Right Side Tables -->
+        <div class="right-section">
+          <div class="map-table-card">
+            <div class="table-number">TABLE 03</div>
+            <div class="table-title">📖 STUDY TABLE C</div>
+            <div class="seats-grid" id="mapSeatsC">
+              <div class="map-seat" data-seat="C1">C1</div>
+              <div class="map-seat" data-seat="C2">C2</div>
+              <div class="map-seat" data-seat="C3">C3</div>
+              <div class="map-seat" data-seat="C4">C4</div>
+              <div class="map-seat" data-seat="C5">C5</div>
+              <div class="map-seat" data-seat="C6">C6</div>
+              <div class="map-seat" data-seat="C7">C7</div>
+              <div class="map-seat" data-seat="C8">C8</div>
+            </div>
+          </div>
+          
+          <div class="map-table-card">
+            <div class="table-number">TABLE 04</div>
+            <div class="table-title">📖 STUDY TABLE D</div>
+            <div class="seats-grid" id="mapSeatsD">
+              <div class="map-seat" data-seat="D1">D1</div>
+              <div class="map-seat" data-seat="D2">D2</div>
+              <div class="map-seat" data-seat="D3">D3</div>
+              <div class="map-seat" data-seat="D4">D4</div>
+              <div class="map-seat" data-seat="D5">D5</div>
+              <div class="map-seat" data-seat="D6">D6</div>
+              <div class="map-seat" data-seat="D7">D7</div>
+              <div class="map-seat" data-seat="D8">D8</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Entrance Area -->
+      <div class="entrance-area">
+        <div class="entrance-door">
+          <span>🚪</span>
+          <span>MAIN ENTRANCE</span>
+        </div>
+        <div class="info-board">
+          <div class="info-item">
+            <div class="info-icon">🪑</div>
+            <div class="info-text"><strong>32</strong> Total Seats</div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">✅</div>
+            <div class="info-text"><strong id="mapAvailableCount">32</strong> Available</div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📚</div>
+            <div class="info-text"><strong id="mapBookedCount">0</strong> Booked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Map Legend -->
+    <div class="map-legend-bottom">
+      <div class="legend-item">
+        <div class="legend-color available"></div>
+        <span>Available Seat</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color booked"></div>
+        <span>Booked Seat</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color table"></div>
+        <span>Study Table</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color aisle"></div>
+        <span>Walkway</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color entrance"></div>
+        <span>Entrance</span>
+      </div>
+    </div>
+  </div>
+
+ <!-- ADD ADMIN DASHBOARD BUTTON  -->
+  <div style="text-align: right; max-width: 800px; margin: 0 auto 20px auto; padding: 0 20px;">
+  <a id="adminDashboardBtn" href="admin-dashboardBooking.html" 
+     style="background: #3B82F6; color: white; padding: 10px 24px; border-radius: 8px; text-decoration: none; display: inline-block; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s;"
+     onmouseover="this.style.transform='translateY(-2px)'"
+     onmouseout="this.style.transform='translateY(0)'">
+    📊 Admin Dashboard
+  </a>
+
+<!-- Booking History Button -->
+  <a id="bookingHistoryBtn" href="bookingSeat-history.html">
+    📝 Booking History
+  </a>
+
+ 
+  <div class="floor">
+    <div class="library">
+
+      <div class="table">
+        <h3>Table 1</h3>
+        <div class="seats">
+          <button class="seat available" data-seat="A1">A1</button>
+          <button class="seat available" data-seat="A2">A2</button>
+          <button class="seat available" data-seat="A3">A3</button>
+          <button class="seat available" data-seat="A4">A4</button>
+            <button class="seat available" data-seat="A5">A5</button>
+          <button class="seat available" data-seat="A6">A6</button>
+          <button class="seat available" data-seat="A7">A7</button>
+          <button class="seat available" data-seat="A8">A8</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <h3>Table 2</h3>
+        <div class="seats">
+          <button class="seat available" data-seat="B1">B1</button>
+          <button class="seat available" data-seat="B2">B2</button>
+          <button class="seat available" data-seat="B3">B3</button>
+          <button class="seat available" data-seat="B4">B4</button>
+           <button class="seat available" data-seat="B5">B5</button>
+          <button class="seat available" data-seat="B6">B6</button>
+          <button class="seat available" data-seat="B7">B7</button>
+          <button class="seat available" data-seat="B8">B8</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <h3>Table 3</h3>
+        <div class="seats">
+          <button class="seat available" data-seat="C1">C1</button>
+          <button class="seat available" data-seat="C2">C2</button>
+          <button class="seat available" data-seat="C3">C3</button>
+          <button class="seat available" data-seat="C4">C4</button>
+            <button class="seat available" data-seat="C5">C5</button>
+          <button class="seat available" data-seat="C6">C6</button>
+          <button class="seat available" data-seat="C7">C7</button>
+          <button class="seat available" data-seat="C8">C8</button>
+        </div>
+      </div>
+
+      <div class="table">
+        <h3>Table 4</h3>
+        <div class="seats">
+          <button class="seat available" data-seat="D1">D1</button>
+          <button class="seat available" data-seat="D2">D2</button>
+          <button class="seat available" data-seat="D3">D3</button>
+          <button class="seat available" data-seat="D4">D4</button>
+             <button class="seat available" data-seat="D5">D5</button>
+          <button class="seat available" data-seat="D6">D6</button>
+          <button class="seat available" data-seat="D7">D7</button>
+          <button class="seat available" data-seat="D8">D8</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="available">Available</span>
+    <span class="booked">Booked</span>
+  </div>
+</div>
+  <!-- Drawer -->
+<div id="drawer-form" 
+  class="fixed top-0 left-0 z-40 h-screen w-80 p-4 overflow-y-auto transition-transform -translate-x-full bg-white shadow-lg">
+
+  <div class="flex items-center justify-between mb-4 border-b pb-2">
+    <h5 id="drawerTitle" class="text-lg font-semibold">Booking</h5>
+
+    <button id="closeDrawer" class="text-gray-500 hover:text-black">
+      ✖
+    </button>
+  </div>
+
+  <form class="space-y-4" id="bookingForm">
+  <!-- Name -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">
+      FULL NAME
+    </label>
+    <input type="text" id="nameInput"
+      class="w-full border rounded-lg p-2"
+      placeholder="e.g., John Doe" required>
+    <div id="nameError" class="error-message"></div>
+  </div>
+
+  <!-- Student ID -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">
+      STUDENT ID / LECTURER ID
+    </label>
+    <input type="text" id="studentIdInput"
+      class="w-full border rounded-lg p-2"
+      placeholder="e.g., IT2345 or L1234" required>
+    <div id="studentIdError" class="error-message"></div>
+  </div>
+  
+  <!-- Seat -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">
+      SELECTED SEAT(S)
+    </label>
+    <input type="text" id="seatInput" readonly
+      class="w-full border rounded-lg p-2 bg-gray-100" placeholder="Click on seats to select">
+    <div id="seatError" class="error-message"></div>
+  </div>
+  
+  <!-- Date - READONLY (User cannot edit, only shows current date) -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">
+      BOOKING DATE
+    </label>
+    <input type="date" id="dateInput" readonly
+      class="w-full border rounded-lg p-2 bg-gray-100 cursor-not-allowed" 
+      style="background-color: #f3f4f6; cursor: not-allowed;">
+    <div id="dateError" class="error-message"></div>
+    <small class="text-gray-500 text-xs mt-1 block">📅 Bookings are only allowed for today</small>
+  </div>
+
+  <!-- From Time -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px;">
+      START TIME
+    </label>
+   <input type="time" id="fromTime" min="08:00" max="18:00" class="w-full border rounded-lg p-2" required>
+    <div id="fromTimeError" class="error-message"></div>
+  </div>
+
+  <!-- To Time -->
+  <div>
+    <label class="block text-sm font-medium mb-1" style="text-transform: uppercase; letter-spacing: 0.5px; ">
+      END TIME
+    </label>
+<input type="time" id="toTime" min="08:00" max="18:00" class="w-full border rounded-lg p-2" required>
+    <div id="toTimeError" class="error-message"></div>
+  </div>
+  
+  <button type="submit"
+    class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold uppercase tracking-wide hover:bg-blue-700 transition">
+    CONFIRM BOOKING
+  </button>
+</form>
+
+</div>
+<script src="../js/auth.js?v=2"></script>
+<script src="../js/bookingseats.js"></script>
+<script>
+fetch("footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+</script>
+  <!-- Footer -->
+ 
+  <div id="footer"></div>
+    <!-- add chat bot -->
+   <!-- Chatbot Integration -->
+<link rel="stylesheet" href="../css/chatbot.css">
+<div id="chatbot-root">
+    <button id="chatToggle" class="chat-toggle">
+        <span class="chat-icon">💬</span>
+        <span class="close-icon" style="display:none;">✕</span>
+    </button>
+
+    <div id="chatContainer" class="chat-container" style="display: none;">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="chat-avatar">🤖</div>
+                <div>
+                    <h3>Library Assistant</h3>
+                    <p id="greetingMessage">Welcome! How can I help you today?</p>
+                </div>
+            </div>
+            <button id="closeChat" class="close-chat">✕</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    👋 Hello! I'm your Library Assistant. <br><br>
+                    I can help you with:
+                    <ul style="margin-top: 8px; margin-left: 20px;">
+                        <li>📖 Finding books and resources</li>
+                        <li>🪑 Seat booking information</li>
+                        <li>⏰ Library hours and location</li>
+                        <li>📚 Borrowing and returning books</li>
+                        <li>💳 Library membership</li>
+                        <li>❓ Any other library-related questions</li>
+                    </ul>
+                    How can I assist you today?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Type your message here..." class="chat-input">
+            <button id="sendMessage" class="send-button">📤 Send</button>
+        </div>
+        
+        <div class="chat-footer">
+            <p>Powered by LibraryHub Assistant</p>
+        </div>
+    </div>
+</div>
+
+<script src="../js/chatbot.js"></script>
+</body>
+</body>
+</html>
